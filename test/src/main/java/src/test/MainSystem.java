@@ -232,6 +232,7 @@ public class MainSystem {
     }
 
     public void ClickCompareBtn(){
+        resultManager.Compare(FileList);
         createResultFrame();
     }
 
