@@ -32,8 +32,8 @@ public class MainSystem
     ArrayList<String> FileList = new ArrayList<String>();
 
     //Component-Configure
-    JButton configureApplyBtnDialog = new JButton("apply");
-    JButton configureCancelBtnDialog = new JButton("cancel");
+    JButton configureApplyBtnDialog = new JButton("Apply");
+    JButton configureCancelBtnDialog = new JButton("Cancel");
 
     public void createMainFrame()
     {
@@ -167,9 +167,6 @@ public class MainSystem
         downPanel.add(new JLabel(""));
         downPanel.add(new JLabel("50%"));
 
-
-
-
         resultFrame.setLayout(new BorderLayout());
         resultFrame.add(upPanel,BorderLayout.CENTER);
         resultFrame.add(downPanel,BorderLayout.SOUTH);
@@ -189,6 +186,13 @@ public class MainSystem
         configureDialog.setSize(200,100);
         configureDialog.setVisible(true);
         configureDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        configureCancelBtnDialog.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                configureDialog.dispose();
+            }
+        });
     }
 
     public static void main( String[] args )
@@ -196,8 +200,6 @@ public class MainSystem
         MainSystem frameExam = new MainSystem();
         frameExam.createMainFrame();
     }
-
-
 
     //GUI Function
     public void ClickOpenBtn(){
