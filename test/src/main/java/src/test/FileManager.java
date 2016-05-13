@@ -52,7 +52,7 @@ public class FileManager{
             File file = new File(s);
             temp.add(file.getName());
         }
-        
+
         String[] strings = temp.toArray(new String[]{""});
         MainSystem.fileListVew.setListData(strings);
     }

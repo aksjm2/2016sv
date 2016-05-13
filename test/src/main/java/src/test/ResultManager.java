@@ -36,16 +36,17 @@ public class ResultManager {
 
     public void Compare(ArrayList<String> FileList) {
         ArrayList[] contents = new ArrayList[FileList.size()];
-        for(int i = 0; i < FileList.size(); i++) {
+        for(int i = 0; i < FileList.size(); i++)
             contents[i] = FileRead(FileList, i);
-        }
 
         for(int i = 0; i < FileList.size(); i++) {
             for(int j = i + 1; j < FileList.size(); j++) {
                 // TODO: 여기 있는 score 정보들을 Scores에 넣어야 됨
                 int scoreRawText = CheckRawText(contents[i], contents[j]);
-                if(scoreRawText >= 80)
+                if(scoreRawText >= 80) {
+                    System.out.println("same");
                     continue;
+                }
 
                 // TODO: ParseFile 추가해야 됨.
                 int scoreComment = CheckComment(contents[i], contents[j]);
@@ -61,7 +62,12 @@ public class ResultManager {
 
     // FIXME: 파라미터가 File에서 ArrayList로 바뀜 -> 전부 다
     public int CheckRawText(ArrayList<String> a, ArrayList<String> b) {
-        return 0;
+        for(int i = 0; i < a.size(); i++) {
+            if(!a.get(i).equals(b.get(i)))
+                return 0;
+        }
+
+        return 100;
     }
 
     public void ParseFile(ArrayList<String> FileList) {
@@ -91,6 +97,4 @@ public class ResultManager {
     public void CalculateScores(){
 
     }
-
-
 }
