@@ -3,6 +3,8 @@ package src.test;
 import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by SuchangKo on 16. 5. 12..
@@ -11,25 +13,19 @@ public class FileManager{
     ArrayList<String> FileList;
 
     public ArrayList<String> OpenFiles(ArrayList<String> FileList){
-
         this.FileList = FileList;
         MainSystem.fc.setMultiSelectionEnabled(true);
 
         int returnVal = MainSystem.fc.showOpenDialog(MainSystem.mainFrame);
-
-
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-
-
             File[] files = MainSystem.fc.getSelectedFiles();
             for(File file : files){
                 this.FileList.add(file.getAbsolutePath());
             }
-
-
         } else {
             System.out.println("Open command cancelled by user.");
         }
+
         return this.FileList;
     }
 
@@ -41,18 +37,23 @@ public class FileManager{
     }
 
     public void DeleteFiles(ArrayList<String> FileList){
-        int[] selectedidx = SelectFiles(FileList);
-        int weight = 0;
-        for(int i : selectedidx){
-            int tmp = i - weight;
-            this.FileList.remove(tmp);
-            weight++;
+        int[] selectedIdx = SelectFiles(FileList);
+
+        for(int i = selectedIdx.length - 1; i >= 0; i--) {
+            this.FileList.remove(selectedIdx[i]);
         }
+
         DisplayFileList(this.FileList);
     }
 
     public void DisplayFileList(ArrayList<String> FileList){
-        String[] strings = FileList.toArray(new String[]{""});
+        ArrayList<String> temp = new ArrayList<String>();
+        for(String s: FileList) {
+            File file = new File(s);
+            temp.add(file.getName());
+        }
+        
+        String[] strings = temp.toArray(new String[]{""});
         MainSystem.fileListVew.setListData(strings);
     }
 
