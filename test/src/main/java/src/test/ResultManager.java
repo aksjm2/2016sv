@@ -35,25 +35,54 @@ public class ResultManager {
     }
 
     public void Compare(ArrayList<String> FileList) {
+        Scores = new ArrayList<HashMap<String, String>>();
+
         ArrayList[] contents = new ArrayList[FileList.size()];
         for(int i = 0; i < FileList.size(); i++)
             contents[i] = FileRead(FileList, i);
 
+
+
+
         for(int i = 0; i < FileList.size(); i++) {
             for(int j = i + 1; j < FileList.size(); j++) {
                 // TODO: 여기 있는 score 정보들을 Scores에 넣어야 됨
+
+                int scoreComment,scoreName,scoreLoop,scoreCondition,scoreFunctionMerge,total;
                 int scoreRawText = CheckRawText(contents[i], contents[j]);
-                if(scoreRawText >= 80) {
-                    System.out.println("same");
-                    continue;
-                }
+
 
                 // TODO: ParseFile 추가해야 됨.
-                int scoreComment = CheckComment(contents[i], contents[j]);
-                int scoreName = CheckName(contents[i], contents[j]);
-                int scoreLoop = CheckLoop(contents[i], contents[j]);
-                int scoreCondition = CheckCondition(contents[i], contents[j]);
-                int scoreFunctionMerge = CheckFunctionMerge(contents[i], contents[j]);
+                if(scoreRawText >= 80) {
+                    scoreComment = CheckComment(contents[i], contents[j]);
+                    scoreName = CheckName(contents[i], contents[j]);
+                    scoreLoop = CheckLoop(contents[i], contents[j]);
+                    scoreCondition = CheckCondition(contents[i], contents[j]);
+                    scoreFunctionMerge = CheckFunctionMerge(contents[i], contents[j]);
+                }else{
+                    scoreComment = scoreRawText;
+                    scoreName = scoreRawText;
+                    scoreLoop = scoreRawText;
+                    scoreCondition = scoreRawText;
+                    scoreFunctionMerge = scoreRawText;
+                }
+
+
+                total = (scoreRawText + scoreComment + scoreName + scoreLoop + scoreCondition + scoreFunctionMerge)/6;
+
+                HashMap<String,String> hashMap = new HashMap<String, String>();
+                hashMap.put("FileA",FileList.get(i));
+                hashMap.put("FileB",FileList.get(j));
+
+                hashMap.put("rawtext",String.valueOf(scoreRawText));
+                hashMap.put("comment",String.valueOf(scoreComment));
+                hashMap.put("name",String.valueOf(scoreName));
+                hashMap.put("loop",String.valueOf(scoreLoop));
+                hashMap.put("condition",String.valueOf(scoreCondition));
+                hashMap.put("functionmerge",String.valueOf(scoreFunctionMerge));
+                hashMap.put("total",String.valueOf(total));
+
+                Scores.add(hashMap);
             }
         }
 
@@ -95,6 +124,16 @@ public class ResultManager {
     }
 
     public void CalculateScores(){
-
+        for(HashMap<String,String> hashMap : Scores){
+            System.out.println(hashMap.get("FileA"));
+            System.out.println(hashMap.get("FileA"));
+            System.out.println(hashMap.get("rawtext"));
+            System.out.println(hashMap.get("comment"));
+            System.out.println(hashMap.get("name"));
+            System.out.println(hashMap.get("loop"));
+            System.out.println(hashMap.get("condition"));
+            System.out.println(hashMap.get("functionmerge"));
+            System.out.println(hashMap.get("total"));
+        }
     }
 }
