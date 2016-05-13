@@ -90,6 +90,19 @@ public class MainSystem {
                 ClickExitBtn();
             }
         });
+        configureCancelBtnDialog.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                configureDialog.dispose();
+            }
+        });
+        configureApplyBtnDialog.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewManager.Configure((Integer)spinnerModel.getValue());
+                configureDialog.dispose();
+            }
+        });
 
         JScrollPane scrollPane = new JScrollPane(fileListVew);
 
@@ -190,12 +203,6 @@ public class MainSystem {
         configureDialog.setVisible(true);
         configureDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        configureCancelBtnDialog.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                configureDialog.dispose();
-            }
-        });
     }
 
     public static void main(String[] args)
