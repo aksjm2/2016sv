@@ -6,8 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class MainSystem
-{
+public class MainSystem {
     FileManager fileManager = new FileManager();
     ResultManager resultManager = new ResultManager();
     ViewManager viewManager = new ViewManager();
@@ -35,8 +34,13 @@ public class MainSystem
     JButton configureApplyBtnDialog = new JButton("Apply");
     JButton configureCancelBtnDialog = new JButton("Cancel");
 
-    public void createMainFrame()
-    {
+    SpinnerModel spinnerModel = new SpinnerNumberModel( 80, //initial value
+                                                        0, //min
+                                                        100, //max
+                                                        5);//step
+    JSpinner spinner = new JSpinner(spinnerModel);
+
+    public void createMainFrame() {
         JPanel upPanel = new JPanel();
         JPanel downPanel = new JPanel();
         JPanel sideButtonPanel = new JPanel();
@@ -49,6 +53,7 @@ public class MainSystem
                 ClickOpenBtn();
             }
         });
+
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -94,13 +99,11 @@ public class MainSystem
         sideButtonPanel.add(displayresultButton);
         sideButtonPanel.add(exitButton);
 
-
         upPanel.setLayout(new BorderLayout());
         upPanel.add(scrollPane,BorderLayout.CENTER);
         upPanel.add(sideButtonPanel,BorderLayout.EAST);
 
         downPanel.setLayout(new BoxLayout(downPanel, BoxLayout.LINE_AXIS));
-
         downPanel.add(openButton);
         downPanel.add(deleteButton);
         downPanel.add(clearButton);
@@ -121,7 +124,7 @@ public class MainSystem
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void createResultFrame(){
+    public void createResultFrame() {
         JPanel upPanel = new JPanel();
         JPanel downPanel = new JPanel();
         JPanel graphPanel = new JPanel();
@@ -176,14 +179,14 @@ public class MainSystem
         resultFrame.setMinimumSize(new Dimension(400,300));
         resultFrame.setVisible(true);
         resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
     }
 
-    public void showConfigureDialog(){
+    public void showConfigureDialog() {
         configureDialog.setLayout(new FlowLayout());
+        configureDialog.add(spinner);
         configureDialog.add(configureApplyBtnDialog);
         configureDialog.add(configureCancelBtnDialog);
-        configureDialog.setSize(200,100);
+        configureDialog.setSize(200,200);
         configureDialog.setVisible(true);
         configureDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -195,14 +198,14 @@ public class MainSystem
         });
     }
 
-    public static void main( String[] args )
+    public static void main(String[] args)
     {
         MainSystem frameExam = new MainSystem();
         frameExam.createMainFrame();
     }
 
     //GUI Function
-    public void ClickOpenBtn(){
+    public void ClickOpenBtn() {
         FileList = fileManager.OpenFiles(FileList);
         fileManager.DisplayFileList(FileList);
     }
@@ -211,13 +214,13 @@ public class MainSystem
         fileManager.DeleteFiles(FileList);
     }
 
-    public void ClickClearBtn(){
+    public void ClickClearBtn() {
         fileManager.Clear();
         FileList.clear();
         fileManager.DisplayFileList(FileList);
     }
 
-    public void ClickConfigureBtn(){
+    public void ClickConfigureBtn() {
 
     }
 
@@ -225,7 +228,7 @@ public class MainSystem
         createResultFrame();
     }
 
-    public void ClickDisplayResultBtn(){
+    public void ClickDisplayResultBtn() {
 
     }
 
