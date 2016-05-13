@@ -199,10 +199,9 @@ public class MainSystem {
         configureDialog.add(spinner);
         configureDialog.add(configureApplyBtnDialog);
         configureDialog.add(configureCancelBtnDialog);
-        configureDialog.setSize(200,200);
+        configureDialog.setSize(200, 200);
         configureDialog.setVisible(true);
         configureDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
     }
 
     public static void main(String[] args)
@@ -217,7 +216,7 @@ public class MainSystem {
         fileManager.DisplayFileList(FileList);
     }
 
-    public void ClickDeleteBtn(){
+    public void ClickDeleteBtn() {
         fileManager.DeleteFiles(FileList);
     }
 
@@ -232,6 +231,11 @@ public class MainSystem {
     }
 
     public void ClickCompareBtn(){
+        if(FileList.size() < 2) {
+            JOptionPane.showMessageDialog(null, "비교할 파일이 2개 이상이어야 합니다.");
+            return;
+        }
+
         resultManager.Compare(FileList);
         createResultFrame();
     }
