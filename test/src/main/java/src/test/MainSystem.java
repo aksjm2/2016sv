@@ -1,11 +1,11 @@
 package src.test;
 
-import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainSystem {
     FileManager fileManager = new FileManager();
@@ -22,6 +22,7 @@ public class MainSystem {
     JButton deleteButton = new JButton("Delete");
     JButton clearButton = new JButton("Clear");
     JButton compareButton = new JButton("Compare");
+    JButton displayresultButton = new JButton("Display Result");
     JButton configureButton = new JButton("Configure");
     JButton exitButton = new JButton("Exit");
     static JList fileListVew = new JList();
@@ -66,6 +67,12 @@ public class MainSystem {
                 ClickClearBtn();
             }
         });
+        displayresultButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ClickDisplayResultBtn();
+            }
+        });
         compareButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -103,6 +110,7 @@ public class MainSystem {
         sideButtonPanel.setLayout(new BoxLayout(sideButtonPanel, BoxLayout.PAGE_AXIS));
         sideButtonPanel.add(compareButton);
         sideButtonPanel.add(configureButton);
+        sideButtonPanel.add(displayresultButton);
         sideButtonPanel.add(exitButton);
 
         upPanel.setLayout(new BorderLayout());
@@ -134,8 +142,12 @@ public class MainSystem {
         JPanel upPanel = new JPanel();
         JPanel downPanel = new JPanel();
         JPanel graphPanel = new JPanel();
-        graphPanel.setBackground(Color.BLUE);
-        graphPanel = viewManager.MakeGraph(10);
+
+        ArrayList<HashMap<String,String>> ResultarrayList = resultManager.Scores;
+        HashMap<String,String> hashMap = ResultarrayList.get(0);
+        HashMap<String,String> hashMap2 = ResultarrayList.get(ResultarrayList.size() - 1);
+
+        graphPanel = viewManager.MakeGraph(hashMap, hashMap2);
 
         JList resultList = new JList();
 
@@ -150,39 +162,35 @@ public class MainSystem {
 
         downPanel.add(new JLabel("Raw Text"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel("40%"));
+        downPanel.add(new JLabel(hashMap.get("rawtext") + "%"));
 
         downPanel.add(new JLabel("Variable & Function"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel("50%"));
+        downPanel.add(new JLabel(hashMap.get("name") + "%"));
 
         downPanel.add(new JLabel("Comment"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel("50%"));
+        downPanel.add(new JLabel(hashMap.get("comment") + "%"));
 
         downPanel.add(new JLabel("Condition"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel("50%"));
+        downPanel.add(new JLabel(hashMap.get("condition") + "%"));
 
         downPanel.add(new JLabel("Loop"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel("50%"));
-
-        downPanel.add(new JLabel("Function Merge"));
-        downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel("50%"));
+        downPanel.add(new JLabel(hashMap.get("loop") + "%"));
 
         downPanel.add(new JLabel("Total"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel("50%"));
+        downPanel.add(new JLabel(hashMap.get("total") + "%"));
 
         resultFrame.setLayout(new BorderLayout());
-        resultFrame.setSize(700,400);
-        resultFrame.add(downPanel,BorderLayout.SOUTH);
         resultFrame.add(upPanel,BorderLayout.CENTER);
+        resultFrame.add(downPanel,BorderLayout.SOUTH);
 
-        resultFrame.setMaximumSize(new Dimension(700,400));
-        resultFrame.setMinimumSize(new Dimension(700,400));
+        resultFrame.setSize(700, 400);
+        resultFrame.setMaximumSize(new Dimension(700, 400));
+        resultFrame.setMinimumSize(new Dimension(700, 400));
         resultFrame.setVisible(true);
         resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
@@ -192,7 +200,7 @@ public class MainSystem {
         configureDialog.add(spinner);
         configureDialog.add(configureApplyBtnDialog);
         configureDialog.add(configureCancelBtnDialog);
-        configureDialog.setSize(300, 70);
+        configureDialog.setSize(200, 200);
         configureDialog.setVisible(true);
         configureDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
@@ -219,7 +227,9 @@ public class MainSystem {
         fileManager.DisplayFileList(FileList);
     }
 
-    public void ClickConfigureBtn() {   }
+    public void ClickConfigureBtn() {
+
+    }
 
     public void ClickCompareBtn(){
         if(FileList.size() < 2) {
@@ -229,6 +239,10 @@ public class MainSystem {
 
         resultManager.Compare(FileList);
         createResultFrame();
+    }
+
+    public void ClickDisplayResultBtn() {
+
     }
 
     public void ClickExitBtn(){
