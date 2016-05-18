@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -141,15 +142,24 @@ public class MainSystem {
     public void createResultFrame() {
         JPanel upPanel = new JPanel();
         JPanel downPanel = new JPanel();
-        JPanel graphPanel = new JPanel();
 
         ArrayList<HashMap<String,String>> ResultarrayList = resultManager.Scores;
-        HashMap<String,String> hashMap = ResultarrayList.get(0);
+        HashMap<String,String> hashMap = ResultarrayList.get(ResultarrayList.size() - 2);
         HashMap<String,String> hashMap2 = ResultarrayList.get(ResultarrayList.size() - 1);
 
-        graphPanel = viewManager.MakeGraph(hashMap, hashMap2);
+        JPanel graphPanel = viewManager.MakeGraph(hashMap, hashMap2);
 
         JList resultList = new JList();
+        resultList.setPreferredSize(new Dimension(200, 600));
+        ArrayList<String> temp = new ArrayList<String>();
+
+        for(int i = ResultarrayList.size() - 2; i >= 0; i--) {
+            HashMap<String,String> hashTemp = ResultarrayList.get(i);
+            temp.add(hashTemp.get("FileAname") + " - " + hashTemp.get("FileBname"));
+        }
+
+        String[] strings = temp.toArray(new String[]{""});
+        resultList.setListData(strings);
 
         upPanel.setLayout(new FlowLayout());
         upPanel.add(new JScrollPane(resultList));
