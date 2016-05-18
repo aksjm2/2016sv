@@ -39,17 +39,17 @@ public class ResultManager {
                     scoreName = CheckName(FileContentArray.get(i),FileContentArray.get(j));
                     scoreLoop = CheckLoop(FileContentArray.get(i),FileContentArray.get(j));
                     scoreCondition = CheckCondition(FileContentArray.get(i),FileContentArray.get(j));
-                    scoreFunctionMerge = CheckFunctionMerge(FileContentArray.get(i),FileContentArray.get(j));
+
                 } else {
                     scoreComment = scoreRawText;
                     scoreName = scoreRawText;
                     scoreLoop = scoreRawText;
                     scoreCondition = scoreRawText;
-                    scoreFunctionMerge = scoreRawText;
+
                 }
 
 
-                total = (scoreRawText + scoreComment + scoreName + scoreLoop + scoreCondition + scoreFunctionMerge) / 6;
+                total = (scoreRawText + scoreComment + scoreName + scoreLoop + scoreCondition ) / 5;
 
                 HashMap<String, String> hashMap = new HashMap<String, String>();
                 hashMap.put("FileA", FileList.get(i));
@@ -60,7 +60,6 @@ public class ResultManager {
                 hashMap.put("name", String.valueOf(scoreName));
                 hashMap.put("loop", String.valueOf(scoreLoop));
                 hashMap.put("condition", String.valueOf(scoreCondition));
-                hashMap.put("functionmerge", String.valueOf(scoreFunctionMerge));
                 hashMap.put("total", String.valueOf(total));
 
                 Scores.add(hashMap);
@@ -528,11 +527,6 @@ public class ResultManager {
         return percentage;
     }
 
-    public int CheckFunctionMerge(String a, String b) {
-
-        return 0;
-    }
-
     public void CalculateScores() {
         int scoreRawText = 0;
         int scoreComment = 0;
@@ -542,6 +536,35 @@ public class ResultManager {
         int scoreFunctionMerge = 0;
         int total = 0;
 
+        HashMap<String,String> temp;
+        int cnt = 0;
+
+
+        for(int m=0; m<Scores.size(); m++) {
+            System.out.print(Scores.get(m).get("total")+" ");
+
+        }
+
+        for(int i=Scores.size(); i>0; i--) {
+            //
+            for (int j=0; j<i-1; j++) {
+                cnt++;
+                if(Integer.parseInt(Scores.get(j).get("total")) > Integer.parseInt(Scores.get(j+1).get("total"))) {
+                    temp = Scores.get(j);
+                    Scores.set(j,Scores.get(j+1));
+                    Scores.set(j+1,temp);
+                }
+            }
+        }
+
+
+        for(int k=0; k<Scores.size(); k++) {
+            System.out.print(Scores.get(k).get("total")+" ");
+
+        }
+
+        System.out.println("\n\n 총 회전 수 : " + cnt);
+
         for (HashMap<String, String> hashMap : Scores) {
             System.out.println(hashMap.get("FileA"));
             System.out.println(hashMap.get("FileB"));
@@ -550,7 +573,7 @@ public class ResultManager {
             scoreName += Integer.parseInt(hashMap.get("name"));
             scoreLoop += Integer.parseInt(hashMap.get("loop"));
             scoreCondition += Integer.parseInt(hashMap.get("condition"));
-            scoreFunctionMerge += Integer.parseInt(hashMap.get("functionmerge"));
+
             total += Integer.parseInt(hashMap.get("total"));
 
 
@@ -559,6 +582,7 @@ public class ResultManager {
             }
 
         }
+
 
         scoreRawText = scoreRawText / Scores.size();
         scoreComment = scoreComment / Scores.size();
@@ -577,7 +601,7 @@ public class ResultManager {
         hashMap.put("name", String.valueOf(scoreName)); //
         hashMap.put("loop", String.valueOf(scoreLoop)); //
         hashMap.put("condition", String.valueOf(scoreCondition)); //
-        hashMap.put("functionmerge", String.valueOf(scoreFunctionMerge)); //
+
         hashMap.put("total", String.valueOf(total));
 
         Scores.add(hashMap);
