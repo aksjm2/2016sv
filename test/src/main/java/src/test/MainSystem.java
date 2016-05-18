@@ -33,6 +33,13 @@ public class MainSystem {
     static JPanel upPanel = new JPanel();
     static JPanel downPanel = new JPanel();
     static JPanel graphPanel;
+    static JLabel rawtext = new JLabel();
+    static JLabel name = new JLabel();
+    static JLabel condition = new JLabel();
+    static JLabel comment = new JLabel();
+    static JLabel loop = new JLabel();
+    static JLabel total = new JLabel();
+
     //Variable-Main
     static JFileChooser fc;
     ArrayList<String> FileList = new ArrayList<String>();
@@ -170,6 +177,16 @@ public class MainSystem {
 
                 viewManager.SelectResult(hash, hash2);
                 upPanel.repaint();
+
+                rawtext.setText(hash.get("rawtext") + "%");
+                name.setText(hash.get("name") + "%");
+                comment.setText(hash.get("comment") + "%");
+                condition.setText(hash.get("condition") + "%");
+                loop.setText(hash.get("loop") + "%");
+                total.setText(hash.get("total") + "%");
+
+                resultFrame.repaint();
+
             }
         });
 
@@ -180,6 +197,13 @@ public class MainSystem {
         upPanel.add(new JScrollPane(resultList));
         upPanel.add(graphPanel);
 
+        rawtext.setText(hashMap.get("rawtext") + "%");
+        name.setText(hashMap.get("name") + "%");
+        comment.setText(hashMap.get("comment") + "%");
+        condition.setText(hashMap.get("condition") + "%");
+        loop.setText(hashMap.get("loop") + "%");
+        total.setText(hashMap.get("total") + "%");
+
         downPanel.setLayout(new GridLayout(0,3));
         downPanel.add(new JLabel("Check Point"));
         downPanel.add(new JLabel(""));
@@ -187,27 +211,27 @@ public class MainSystem {
 
         downPanel.add(new JLabel("Raw Text"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel(hashMap.get("rawtext") + "%"));
+        downPanel.add(rawtext);
 
         downPanel.add(new JLabel("Variable & Function"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel(hashMap.get("name") + "%"));
+        downPanel.add(name);
 
         downPanel.add(new JLabel("Comment"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel(hashMap.get("comment") + "%"));
+        downPanel.add(comment);
 
         downPanel.add(new JLabel("Condition"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel(hashMap.get("condition") + "%"));
+        downPanel.add(condition);
 
         downPanel.add(new JLabel("Loop"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel(hashMap.get("loop") + "%"));
+        downPanel.add(loop);
 
         downPanel.add(new JLabel("Total"));
         downPanel.add(new JLabel(""));
-        downPanel.add(new JLabel(hashMap.get("total") + "%"));
+        downPanel.add(total);
 
         resultFrame.setLayout(new BorderLayout());
         resultFrame.add(upPanel,BorderLayout.CENTER);
