@@ -35,9 +35,6 @@ public class ViewManager {
         return mainPanel;
     }
 
-    public void DisplayResult(){
-
-    }
 
     public void Configure(int Percentage){
         this.Percentage = Percentage;

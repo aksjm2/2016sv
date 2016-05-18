@@ -52,8 +52,14 @@ public class ResultManager {
                 total = (scoreRawText + scoreComment + scoreName + scoreLoop + scoreCondition ) / 5;
 
                 HashMap<String, String> hashMap = new HashMap<String, String>();
-                hashMap.put("FileA", FileList.get(i));
-                hashMap.put("FileB", FileList.get(j));
+                File tmpFile = new File(FileList.get(i));
+
+                hashMap.put("FileApath", FileList.get(i));
+                hashMap.put("FileAname",tmpFile.getName());
+
+                tmpFile = new File(FileList.get(j));
+                hashMap.put("FileBpath", FileList.get(j));
+                hashMap.put("FileBname", tmpFile.getName());
 
                 hashMap.put("rawtext", String.valueOf(scoreRawText));
                 hashMap.put("comment", String.valueOf(scoreComment));
