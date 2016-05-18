@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class ViewManager {
     int Percentage;
+    static DrawGraph mainPanel;
 
     public JPanel MakeGraph(HashMap<String,String> hashMap, HashMap<String, String> hashMap2) {
 
@@ -30,7 +31,7 @@ public class ViewManager {
 
         List<Integer> scores = score;
         List<Integer> scores2 = score2;
-        DrawGraph mainPanel = new DrawGraph(scores, scores2);
+        mainPanel = new DrawGraph(scores, scores2);
 
         return mainPanel;
     }
@@ -40,7 +41,21 @@ public class ViewManager {
         this.Percentage = Percentage;
     }
 
-    public void SelectResult(){
+    public void SelectResult(HashMap<String,String> hashMap, HashMap<String, String> hashMap2) {
+        ArrayList<Integer> scores = new ArrayList<Integer>();
+        scores.add(Integer.parseInt(hashMap.get("rawtext")));
+        scores.add(Integer.parseInt(hashMap.get("name")));
+        scores.add(Integer.parseInt(hashMap.get("comment")));
+        scores.add(Integer.parseInt(hashMap.get("loop")));
+        scores.add(Integer.parseInt(hashMap.get("condition")));
 
+        ArrayList<Integer> scores2 = new ArrayList<Integer>();
+        scores2.add(Integer.parseInt(hashMap2.get("rawtext")));
+        scores2.add(Integer.parseInt(hashMap2.get("name")));
+        scores2.add(Integer.parseInt(hashMap2.get("comment")));
+        scores2.add(Integer.parseInt(hashMap2.get("loop")));
+        scores2.add(Integer.parseInt(hashMap2.get("condition")));
+
+        mainPanel.setScores(scores, scores2);
     }
 }

@@ -28,6 +28,7 @@ public class DrawGraph extends JPanel {
     private static final int GRAPH_POINT_WIDTH = 12;
     private static final int Y_HATCH_CNT = 10;
     private List<Integer> scores, scores2;
+    static Graphics g;
 
     public DrawGraph(List<Integer> scores, List<Integer> scores2) {
         this.scores = scores;
@@ -36,6 +37,7 @@ public class DrawGraph extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        this.g = g;
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -150,6 +152,12 @@ public class DrawGraph extends JPanel {
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(PREF_W, PREF_H);
+    }
+
+    public void setScores(List<Integer> score, List<Integer> score2) {
+        this.scores = score;
+        this.scores2 = score2;
+        paintComponent(this.g);
     }
 
     /*
