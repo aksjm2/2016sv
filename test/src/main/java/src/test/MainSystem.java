@@ -153,6 +153,12 @@ public class MainSystem {
 
     public void createResultFrame() {
         ArrayList<HashMap<String,String>> ResultarrayList = resultManager.Scores;
+
+        if(ResultarrayList.size() == 0) {
+            JOptionPane.showMessageDialog(null, "복제된 것으로 의심되는 소스가 없습니다");
+            return;
+        }
+
         HashMap<String,String> hashMap = ResultarrayList.get(ResultarrayList.size() - 2);
         HashMap<String,String> hashMap2 = ResultarrayList.get(ResultarrayList.size() - 1);
 
@@ -186,7 +192,6 @@ public class MainSystem {
                 total.setText(hash.get("total") + "%");
 
                 resultFrame.repaint();
-
             }
         });
 

@@ -22,15 +22,12 @@ public class ResultManager {
 
         ArrayList<String> FileContentArray = ParseFile(FileList);
 
-
-
         for (int i = 0; i < FileList.size(); i++) {
             for (int j = i + 1; j < FileList.size(); j++) {
                 // TODO: 여기 있는 score 정보들을 Scores에 넣어야 됨
 
                 int scoreComment, scoreName, scoreLoop, scoreCondition, scoreFunctionMerge, total;
                 int scoreRawText = CheckRawText(FileContentArray.get(i),FileContentArray.get(j));
-
 
                 // TODO: ParseFile 추가해야 됨.
                 // FIXME: ParseFile의 역할
@@ -48,27 +45,28 @@ public class ResultManager {
 
                 }
 
-
                 total = (scoreRawText + scoreComment + scoreName + scoreLoop + scoreCondition ) / 5;
 
                 HashMap<String, String> hashMap = new HashMap<String, String>();
-                File tmpFile = new File(FileList.get(i));
+                if(total > ViewManager.Percentage) {
+                    File tmpFile = new File(FileList.get(i));
 
-                hashMap.put("FileApath", FileList.get(i));
-                hashMap.put("FileAname",tmpFile.getName());
+                    hashMap.put("FileApath", FileList.get(i));
+                    hashMap.put("FileAname", tmpFile.getName());
 
-                tmpFile = new File(FileList.get(j));
-                hashMap.put("FileBpath", FileList.get(j));
-                hashMap.put("FileBname", tmpFile.getName());
+                    tmpFile = new File(FileList.get(j));
+                    hashMap.put("FileBpath", FileList.get(j));
+                    hashMap.put("FileBname", tmpFile.getName());
 
-                hashMap.put("rawtext", String.valueOf(scoreRawText));
-                hashMap.put("comment", String.valueOf(scoreComment));
-                hashMap.put("name", String.valueOf(scoreName));
-                hashMap.put("loop", String.valueOf(scoreLoop));
-                hashMap.put("condition", String.valueOf(scoreCondition));
-                hashMap.put("total", String.valueOf(total));
+                    hashMap.put("rawtext", String.valueOf(scoreRawText));
+                    hashMap.put("comment", String.valueOf(scoreComment));
+                    hashMap.put("name", String.valueOf(scoreName));
+                    hashMap.put("loop", String.valueOf(scoreLoop));
+                    hashMap.put("condition", String.valueOf(scoreCondition));
+                    hashMap.put("total", String.valueOf(total));
 
-                Scores.add(hashMap);
+                    Scores.add(hashMap);
+                }
             }
         }
 
@@ -315,20 +313,14 @@ public class ResultManager {
         }
 
         for(String key : keyword) {
-
             b = b.replaceAll("\\b" + key + "\\b", "tmp");
         }
-
-
-
-
-
-
 
         String s0 = a;
         String s1 = b;
 
         int percentage = 0;
+
         // Trim and remove duplicate spaces
         s0 = s0.trim().replaceAll("\\s+", " ");
         s1 = s1.trim().replaceAll("\\s+", " ");
@@ -378,11 +370,7 @@ public class ResultManager {
         percentage=(int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
 
         return percentage;
-
-
     }
-
-
 
     public int CheckLoop(String a, String b) {
         //주석제거
@@ -400,9 +388,7 @@ public class ResultManager {
         //반복문 변경
 
         a = a.replaceAll("switch","if");
-
         b = b.replaceAll("switch","if");
-
 
         String s0 = a;
         String s1 = b;
@@ -452,7 +438,6 @@ public class ResultManager {
             cost = newcost;
             newcost = swap;
         }
-
 
         percentage=(int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
 
@@ -527,7 +512,6 @@ public class ResultManager {
             newcost = swap;
         }
 
-
         percentage=(int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
 
         return percentage;
@@ -546,25 +530,29 @@ public class ResultManager {
         int cnt = 0;
 
 
-        for(int m=0; m<Scores.size(); m++) {
+        if(Scores.size() == 0)
+            return;
+
+        for(int m = 0; m < Scores.size(); m++) {
             System.out.print(Scores.get(m).get("total")+" ");
 
         }
 
-        for(int i=Scores.size(); i>0; i--) {
+        for(int i = 0; i < Scores.size(); i++) {
             //
-            for (int j=0; j<i-1; j++) {
+            for (int j = 0; j < Scores.size() - i - 1; j++) {
                 cnt++;
-                if(Integer.parseInt(Scores.get(j).get("total")) > Integer.parseInt(Scores.get(j+1).get("total"))) {
+                System.out.println("J:" + j);
+                if(Integer.parseInt(Scores.get(j).get("total")) > Integer.parseInt(Scores.get(j + 1).get("total"))) {
                     temp = Scores.get(j);
-                    Scores.set(j,Scores.get(j+1));
-                    Scores.set(j+1,temp);
+                    Scores.set(j, Scores.get(j + 1));
+                    Scores.set(j + 1, temp);
                 }
             }
         }
 
 
-        for(int k=0; k<Scores.size(); k++) {
+        for(int k=0; k < Scores.size(); k++) {
             System.out.print(Scores.get(k).get("total")+" ");
 
         }
@@ -582,13 +570,11 @@ public class ResultManager {
 
             total += Integer.parseInt(hashMap.get("total"));
 
-
             for( Map.Entry<String, String> elem : hashMap.entrySet() ){
                 System.out.println( String.format("키 : %s, 값 : %s", elem.getKey(), elem.getValue()) );
             }
 
         }
-
 
         scoreRawText = scoreRawText / Scores.size();
         scoreComment = scoreComment / Scores.size();
