@@ -39,7 +39,7 @@ public class DrawGraph extends JPanel {
     protected void paintComponent(Graphics g) {
         this.g = g;
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         double xScale = ((double) getWidth() - 2 * BORDER_GAP) / (scores.size() - 1);
@@ -89,7 +89,8 @@ public class DrawGraph extends JPanel {
         g2.setColor(GRAPH_POINT_COLOR);
         for (int i = 0; i < graphPoints.size(); i++) {
             int x = graphPoints.get(i).x - GRAPH_POINT_WIDTH / 2;
-            int y = graphPoints.get(i).y - GRAPH_POINT_WIDTH / 2;;
+            int y = graphPoints.get(i).y - GRAPH_POINT_WIDTH / 2;
+            ;
             int ovalW = GRAPH_POINT_WIDTH;
             int ovalH = GRAPH_POINT_WIDTH;
             g2.fillOval(x, y, ovalW, ovalH);
@@ -142,7 +143,8 @@ public class DrawGraph extends JPanel {
         g2.setColor(GRAPH_POINT_COLOR);
         for (int i = 0; i < graphPoints2.size(); i++) {
             int x = graphPoints2.get(i).x - GRAPH_POINT_WIDTH / 2;
-            int y = graphPoints2.get(i).y - GRAPH_POINT_WIDTH / 2;;
+            int y = graphPoints2.get(i).y - GRAPH_POINT_WIDTH / 2;
+            ;
             int ovalW = GRAPH_POINT_WIDTH;
             int ovalH = GRAPH_POINT_WIDTH;
             g2.fillOval(x, y, ovalW, ovalH);

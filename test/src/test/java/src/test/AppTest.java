@@ -1,38 +1,48 @@
+
+
 package src.test;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-    extends TestCase
+public class AppTest
+
 {
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
+
+    @org.junit.Test
+    public void TestCheckRawText(){
+        ResultManager resultManager = new ResultManager();
+        assertEquals(100,resultManager.CheckRawText("int a = 9;","int a = 9;"));
+
     }
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
+    @org.junit.Test
+    public void TestCheckName(){
+        ResultManager resultManager = new ResultManager();
+        assertEquals(100,resultManager.CheckName("int a = 9;","int b = 9;"));
     }
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+    @org.junit.Test
+    public void TestCheckLoop(){
+        ResultManager resultManager = new ResultManager();
+        assertEquals(100,resultManager.CheckLoop("while","for"));
+    }
+
+    @org.junit.Test
+    public void TestCheckCondition(){
+        ResultManager resultManager = new ResultManager();
+        assertEquals(100,resultManager.CheckCondition("if","switch"));
+    }
+
+    @org.junit.Test
+    public void TestCheckComment(){
+        ResultManager resultManager = new ResultManager();
+        assertEquals(100,resultManager.CheckComment("//aa","//aa"));
     }
 }

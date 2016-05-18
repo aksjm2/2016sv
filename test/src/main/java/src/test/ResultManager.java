@@ -27,15 +27,15 @@ public class ResultManager {
                 // TODO: 여기 있는 score 정보들을 Scores에 넣어야 됨
 
                 int scoreComment, scoreName, scoreLoop, scoreCondition, scoreFunctionMerge, total;
-                int scoreRawText = CheckRawText(FileContentArray.get(i),FileContentArray.get(j));
+                int scoreRawText = CheckRawText(FileContentArray.get(i), FileContentArray.get(j));
 
                 // TODO: ParseFile 추가해야 됨.
                 // FIXME: ParseFile의 역할
                 if (scoreRawText <= 80) {
-                    scoreComment = CheckComment(FileContentArray.get(i),FileContentArray.get(j));
-                    scoreName = CheckName(FileContentArray.get(i),FileContentArray.get(j));
-                    scoreLoop = CheckLoop(FileContentArray.get(i),FileContentArray.get(j));
-                    scoreCondition = CheckCondition(FileContentArray.get(i),FileContentArray.get(j));
+                    scoreComment = CheckComment(FileContentArray.get(i), FileContentArray.get(j));
+                    scoreName = CheckName(FileContentArray.get(i), FileContentArray.get(j));
+                    scoreLoop = CheckLoop(FileContentArray.get(i), FileContentArray.get(j));
+                    scoreCondition = CheckCondition(FileContentArray.get(i), FileContentArray.get(j));
 
                 } else {
                     scoreComment = scoreRawText;
@@ -45,10 +45,10 @@ public class ResultManager {
 
                 }
 
-                total = (scoreRawText + scoreComment + scoreName + scoreLoop + scoreCondition ) / 5;
+                total = (scoreRawText + scoreComment + scoreName + scoreLoop + scoreCondition) / 5;
 
                 HashMap<String, String> hashMap = new HashMap<String, String>();
-                if(total > ViewManager.Percentage) {
+                if (total > ViewManager.Percentage) {
                     File tmpFile = new File(FileList.get(i));
 
                     hashMap.put("FileApath", FileList.get(i));
@@ -126,16 +126,15 @@ public class ResultManager {
         }
 
 
-        percentage=(int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
+        percentage = (int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
 
         return percentage;
     }
 
 
-
     public ArrayList<String> ParseFile(ArrayList<String> FileList) {
         ArrayList<String> FileArray = new ArrayList<String>();
-        for(String fileaddr : FileList){
+        for (String fileaddr : FileList) {
             try {
                 File file = new File(fileaddr);
                 FileReader fileReader = new FileReader(file);
@@ -143,9 +142,9 @@ public class ResultManager {
                 String content = "";
                 String line;
                 while ((line = bufferedReader.readLine()) != null)
-                    content += line+"\n";
+                    content += line + "\n";
                 FileArray.add(content);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -154,7 +153,7 @@ public class ResultManager {
 
     public int CheckComment(String a, String b) {
 
-        Pattern pattern  = pattern = Pattern.compile("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)");
+        Pattern pattern = pattern = Pattern.compile("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)");
 
         String tmp_a = a;
         String tmp_b = b;
@@ -162,13 +161,12 @@ public class ResultManager {
         String s1 = "";
 
 
-
         Matcher matcher = pattern.matcher(tmp_a);
 
 
         while (matcher.find()) {
             String str = matcher.group();
-            s0+=str+"\n";
+            s0 += str + "\n";
         }
 
         matcher = pattern.matcher(tmp_b);
@@ -176,7 +174,7 @@ public class ResultManager {
 
         while (matcher.find()) {
             String str = matcher.group();
-            s1+=str+"\n";
+            s1 += str + "\n";
         }
 
         int percentage = 0;
@@ -225,23 +223,23 @@ public class ResultManager {
             newcost = swap;
         }
 
-        percentage=(int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
+        percentage = (int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
 
         return percentage;
     }
 
     public int CheckName(String a, String b) {
         //주석제거
-        a = a.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)","");
-        b = b.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)","");
-        a = a.replaceAll("\\("," (");
-        a = a.replaceAll(","," , ");
-        a = a.replaceAll("\r"," ");
-        a = a.replaceAll("\n"," ");
-        b = b.replaceAll("\\("," (");
-        b = b.replaceAll(","," , ");
-        b = b.replaceAll("\r"," ");
-        b = b.replaceAll("\n"," ");
+        a = a.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", "");
+        b = b.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", "");
+        a = a.replaceAll("\\(", " (");
+        a = a.replaceAll(",", " , ");
+        a = a.replaceAll("\r", " ");
+        a = a.replaceAll("\n", " ");
+        b = b.replaceAll("\\(", " (");
+        b = b.replaceAll(",", " , ");
+        b = b.replaceAll("\r", " ");
+        b = b.replaceAll("\n", " ");
         // short int long float double char
         // 변수명 변경
         String[] array_a = a.split(" ");
@@ -250,32 +248,32 @@ public class ResultManager {
         boolean prev_type = false;
         ArrayList<String> keyword = new ArrayList<String>();
 
-        for(int i = 0; i < array_a.length; i++){
-            if(prev_type){
+        for (int i = 0; i < array_a.length; i++) {
+            if (prev_type) {
                 String key = "";
-                Pattern pattern  = Pattern.compile("[a-zA-Z_0-9]");
+                Pattern pattern = Pattern.compile("[a-zA-Z_0-9]");
                 Matcher matcher = pattern.matcher(array_a[i]);
                 while (matcher.find()) {
                     String str = matcher.group();
-                    key+=str;
+                    key += str;
                 }
 
                 keyword.add(key);
                 prev_type = false;
-            }else{
-                if(array_a[i].equals("short") ||
+            } else {
+                if (array_a[i].equals("short") ||
                         array_a[i].equals("int") ||
                         array_a[i].equals("long") ||
                         array_a[i].equals("float") ||
                         array_a[i].equals("double") ||
                         array_a[i].equals("char") ||
-                        array_a[i].equals("FILE") ){
+                        array_a[i].equals("FILE")) {
                     prev_type = true;
                 }
             }
         }
 
-        for(String key : keyword) {
+        for (String key : keyword) {
             a = a.replaceAll("\\b" + key + "\\b", "tmp");
         }
 
@@ -285,34 +283,34 @@ public class ResultManager {
         //For B
         keyword = new ArrayList<String>();
 
-        for(int i = 0; i < array_b.length; i++){
-            if(prev_type){
+        for (int i = 0; i < array_b.length; i++) {
+            if (prev_type) {
                 String key = "";
                 Pattern pattern = Pattern.compile("[a-zA-Z_0-9]");
                 Matcher matcher = pattern.matcher(array_b[i]);
                 while (matcher.find()) {
                     String str = matcher.group();
-                    key+=str;
+                    key += str;
                 }
 
                 keyword.add(key);
                 prev_type = false;
-            }else{
+            } else {
 
-                if(array_b[i].equals("short") ||
+                if (array_b[i].equals("short") ||
                         array_b[i].equals("int") ||
                         array_b[i].equals("long") ||
                         array_b[i].equals("float") ||
                         array_b[i].equals("double") ||
                         array_b[i].equals("char") ||
-                        array_b[i].equals("FILE") ){
+                        array_b[i].equals("FILE")) {
 
                     prev_type = true;
                 }
             }
         }
 
-        for(String key : keyword) {
+        for (String key : keyword) {
             b = b.replaceAll("\\b" + key + "\\b", "tmp");
         }
 
@@ -367,28 +365,32 @@ public class ResultManager {
         }
 
 
-        percentage=(int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
+        percentage = (int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
 
         return percentage;
     }
 
     public int CheckLoop(String a, String b) {
         //주석제거
-        a = a.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)","");
-        b = b.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)","");
-        a = a.replaceAll("\\("," (");
-        a = a.replaceAll(","," , ");
-        a = a.replaceAll("\r"," ");
-        a = a.replaceAll("\n"," ");
-        b = b.replaceAll("\\("," (");
-        b = b.replaceAll(","," , ");
-        b = b.replaceAll("\r"," ");
-        b = b.replaceAll("\n"," ");
+        a = a.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", "");
+        b = b.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", "");
+        a = a.replaceAll("\\(", " (");
+        a = a.replaceAll(",", " , ");
+        a = a.replaceAll("\r", " ");
+        a = a.replaceAll("\n", " ");
+        b = b.replaceAll("\\(", " (");
+        b = b.replaceAll(",", " , ");
+        b = b.replaceAll("\r", " ");
+        b = b.replaceAll("\n", " ");
+
 
         //반복문 변경
 
-        a = a.replaceAll("switch","if");
-        b = b.replaceAll("switch","if");
+        a = a.replaceAll("while", "for");
+
+        b = b.replaceAll("while", "for");
+
+
 
         String s0 = a;
         String s1 = b;
@@ -439,29 +441,28 @@ public class ResultManager {
             newcost = swap;
         }
 
-        percentage=(int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
+        percentage = (int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
 
         return percentage;
     }
 
     public int CheckCondition(String a, String b) {
         //주석제거
-        a = a.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)","");
-        b = b.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)","");
-        a = a.replaceAll("\\("," (");
-        a = a.replaceAll(","," , ");
-        a = a.replaceAll("\r"," ");
-        a = a.replaceAll("\n"," ");
-        b = b.replaceAll("\\("," (");
-        b = b.replaceAll(","," , ");
-        b = b.replaceAll("\r"," ");
-        b = b.replaceAll("\n"," ");
+        a = a.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", "");
+        b = b.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", "");
+        a = a.replaceAll("\\(", " (");
+        a = a.replaceAll(",", " , ");
+        a = a.replaceAll("\r", " ");
+        a = a.replaceAll("\n", " ");
+        b = b.replaceAll("\\(", " (");
+        b = b.replaceAll(",", " , ");
+        b = b.replaceAll("\r", " ");
+        b = b.replaceAll("\n", " ");
 
-        //반복문 변경
+        //조건문 변경
 
-        a = a.replaceAll("while","for");
-
-        b = b.replaceAll("while","for");
+        a = a.replaceAll("switch", "if");
+        b = b.replaceAll("switch", "if");
 
         String s0 = a;
         String s1 = b;
@@ -512,7 +513,7 @@ public class ResultManager {
             newcost = swap;
         }
 
-        percentage=(int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
+        percentage = (int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
 
         return percentage;
     }
@@ -526,24 +527,24 @@ public class ResultManager {
         int scoreFunctionMerge = 0;
         int total = 0;
 
-        HashMap<String,String> temp;
+        HashMap<String, String> temp;
         int cnt = 0;
 
 
-        if(Scores.size() == 0)
+        if (Scores.size() == 0)
             return;
 
-        for(int m = 0; m < Scores.size(); m++) {
-            System.out.print(Scores.get(m).get("total")+" ");
+        for (int m = 0; m < Scores.size(); m++) {
+            System.out.print(Scores.get(m).get("total") + " ");
 
         }
 
-        for(int i = 0; i < Scores.size(); i++) {
+        for (int i = 0; i < Scores.size(); i++) {
             //
             for (int j = 0; j < Scores.size() - i - 1; j++) {
                 cnt++;
                 System.out.println("J:" + j);
-                if(Integer.parseInt(Scores.get(j).get("total")) > Integer.parseInt(Scores.get(j + 1).get("total"))) {
+                if (Integer.parseInt(Scores.get(j).get("total")) > Integer.parseInt(Scores.get(j + 1).get("total"))) {
                     temp = Scores.get(j);
                     Scores.set(j, Scores.get(j + 1));
                     Scores.set(j + 1, temp);
@@ -552,8 +553,8 @@ public class ResultManager {
         }
 
 
-        for(int k=0; k < Scores.size(); k++) {
-            System.out.print(Scores.get(k).get("total")+" ");
+        for (int k = 0; k < Scores.size(); k++) {
+            System.out.print(Scores.get(k).get("total") + " ");
 
         }
 
@@ -570,8 +571,8 @@ public class ResultManager {
 
             total += Integer.parseInt(hashMap.get("total"));
 
-            for( Map.Entry<String, String> elem : hashMap.entrySet() ){
-                System.out.println( String.format("키 : %s, 값 : %s", elem.getKey(), elem.getValue()) );
+            for (Map.Entry<String, String> elem : hashMap.entrySet()) {
+                System.out.println(String.format("키 : %s, 값 : %s", elem.getKey(), elem.getValue()));
             }
 
         }

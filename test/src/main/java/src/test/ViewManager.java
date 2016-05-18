@@ -13,7 +13,7 @@ public class ViewManager {
     static int Percentage = 50;
     static DrawGraph mainPanel;
 
-    public JPanel MakeGraph(HashMap<String,String> hashMap, HashMap<String, String> hashMap2) {
+    public JPanel MakeGraph(HashMap<String, String> hashMap, HashMap<String, String> hashMap2) {
 
         ArrayList<Integer> score = new ArrayList<Integer>();
         score.add(Integer.parseInt(hashMap.get("rawtext")));
@@ -37,11 +37,11 @@ public class ViewManager {
     }
 
 
-    public void Configure(int Percentage){
+    public void Configure(int Percentage) {
         this.Percentage = Percentage;
     }
 
-    public void SelectResult(HashMap<String,String> hashMap, HashMap<String, String> hashMap2) {
+    public void SelectResult(HashMap<String, String> hashMap, HashMap<String, String> hashMap2) {
         ArrayList<Integer> scores = new ArrayList<Integer>();
         scores.add(Integer.parseInt(hashMap.get("rawtext")));
         scores.add(Integer.parseInt(hashMap.get("name")));
