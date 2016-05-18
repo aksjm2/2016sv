@@ -580,5 +580,7 @@ public class ResultManager {
         hashMap.put("functionmerge", String.valueOf(scoreFunctionMerge)); //
         hashMap.put("total", String.valueOf(total));
 
+        Scores.add(hashMap);
+
     }
 }
