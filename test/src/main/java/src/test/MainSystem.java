@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainSystem {
     FileManager fileManager = new FileManager();
@@ -34,10 +36,10 @@ public class MainSystem {
     JButton configureApplyBtnDialog = new JButton("Apply");
     JButton configureCancelBtnDialog = new JButton("Cancel");
 
-    SpinnerModel spinnerModel = new SpinnerNumberModel( 80, //initial value
-                                                        0, //min
-                                                        100, //max
-                                                        5);//step
+    SpinnerModel spinnerModel = new SpinnerNumberModel(80, //initial value
+            0, //min
+            100, //max
+            5);//step
     JSpinner spinner = new JSpinner(spinnerModel);
 
     public void createMainFrame() {
@@ -99,7 +101,7 @@ public class MainSystem {
         configureApplyBtnDialog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                viewManager.Configure((Integer)spinnerModel.getValue());
+                viewManager.Configure((Integer) spinnerModel.getValue());
                 configureDialog.dispose();
             }
         });
@@ -113,8 +115,8 @@ public class MainSystem {
         sideButtonPanel.add(exitButton);
 
         upPanel.setLayout(new BorderLayout());
-        upPanel.add(scrollPane,BorderLayout.CENTER);
-        upPanel.add(sideButtonPanel,BorderLayout.EAST);
+        upPanel.add(scrollPane, BorderLayout.CENTER);
+        upPanel.add(sideButtonPanel, BorderLayout.EAST);
 
         downPanel.setLayout(new BoxLayout(downPanel, BoxLayout.LINE_AXIS));
         downPanel.add(openButton);
@@ -122,14 +124,14 @@ public class MainSystem {
         downPanel.add(clearButton);
 
         mainFrame.setLayout(new BorderLayout());
-        mainFrame.add(upPanel,BorderLayout.CENTER);
-        mainFrame.add(downPanel,BorderLayout.SOUTH);
+        mainFrame.add(upPanel, BorderLayout.CENTER);
+        mainFrame.add(downPanel, BorderLayout.SOUTH);
 
         //프레임 크기 지정
         mainFrame.setSize(400, 300); // (width,height)
         //Fix mainFrame Size
-        mainFrame.setMaximumSize(new Dimension(400,300));
-        mainFrame.setMinimumSize(new Dimension(400,300));
+        mainFrame.setMaximumSize(new Dimension(400, 300));
+        mainFrame.setMinimumSize(new Dimension(400, 300));
         //프레임 보이기
         mainFrame.setVisible(true);
 
@@ -150,7 +152,7 @@ public class MainSystem {
         upPanel.add(new JScrollPane(resultList));
         upPanel.add(graphPanel);
 
-        downPanel.setLayout(new GridLayout(0,3));
+        downPanel.setLayout(new GridLayout(0, 3));
         downPanel.add(new JLabel("Check Point"));
         downPanel.add(new JLabel(""));
         downPanel.add(new JLabel("Percentage"));
@@ -184,12 +186,12 @@ public class MainSystem {
         downPanel.add(new JLabel("50%"));
 
         resultFrame.setLayout(new BorderLayout());
-        resultFrame.add(upPanel,BorderLayout.CENTER);
-        resultFrame.add(downPanel,BorderLayout.SOUTH);
+        resultFrame.add(upPanel, BorderLayout.CENTER);
+        resultFrame.add(downPanel, BorderLayout.SOUTH);
 
-        resultFrame.setSize(400,300);
-        resultFrame.setMaximumSize(new Dimension(400,300));
-        resultFrame.setMinimumSize(new Dimension(400,300));
+        resultFrame.setSize(400, 300);
+        resultFrame.setMaximumSize(new Dimension(400, 300));
+        resultFrame.setMinimumSize(new Dimension(400, 300));
         resultFrame.setVisible(true);
         resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
@@ -204,8 +206,13 @@ public class MainSystem {
         configureDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public static void main(String[] args)
-    {
+
+
+    public static void main(String[] args) {
+
+
+
+
         MainSystem frameExam = new MainSystem();
         frameExam.createMainFrame();
     }
@@ -230,8 +237,8 @@ public class MainSystem {
 
     }
 
-    public void ClickCompareBtn(){
-        if(FileList.size() < 2) {
+    public void ClickCompareBtn() {
+        if (FileList.size() < 2) {
             JOptionPane.showMessageDialog(null, "비교할 파일이 2개 이상이어야 합니다.");
             return;
         }
@@ -244,12 +251,14 @@ public class MainSystem {
 
     }
 
-    public void ClickExitBtn(){
+    public void ClickExitBtn() {
         Exit();
     }
 
-    public void Exit(){
+    public void Exit() {
         System.exit(0);
     }
 
 }
+
+

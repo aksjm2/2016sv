@@ -9,17 +9,17 @@ import java.util.Collections;
 /**
  * Created by SuchangKo on 16. 5. 12..
  */
-public class FileManager{
+public class FileManager {
     ArrayList<String> FileList;
 
-    public ArrayList<String> OpenFiles(ArrayList<String> FileList){
+    public ArrayList<String> OpenFiles(ArrayList<String> FileList) {
         this.FileList = FileList;
         MainSystem.fc.setMultiSelectionEnabled(true);
 
         int returnVal = MainSystem.fc.showOpenDialog(MainSystem.mainFrame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File[] files = MainSystem.fc.getSelectedFiles();
-            for(File file : files){
+            for (File file : files) {
                 this.FileList.add(file.getAbsolutePath());
             }
         } else {
@@ -29,26 +29,26 @@ public class FileManager{
         return this.FileList;
     }
 
-    public int[] SelectFiles(ArrayList<String> FileList){
+    public int[] SelectFiles(ArrayList<String> FileList) {
         this.FileList = FileList;
         int[] selectedidx = MainSystem.fileListVew.getSelectedIndices();
 
         return selectedidx;
     }
 
-    public void DeleteFiles(ArrayList<String> FileList){
+    public void DeleteFiles(ArrayList<String> FileList) {
         int[] selectedIdx = SelectFiles(FileList);
 
-        for(int i = selectedIdx.length - 1; i >= 0; i--) {
+        for (int i = selectedIdx.length - 1; i >= 0; i--) {
             this.FileList.remove(selectedIdx[i]);
         }
 
         DisplayFileList(this.FileList);
     }
 
-    public void DisplayFileList(ArrayList<String> FileList){
+    public void DisplayFileList(ArrayList<String> FileList) {
         ArrayList<String> temp = new ArrayList<String>();
-        for(String s: FileList) {
+        for (String s : FileList) {
             File file = new File(s);
             temp.add(file.getName());
         }
@@ -57,7 +57,7 @@ public class FileManager{
         MainSystem.fileListVew.setListData(strings);
     }
 
-    public void Clear(){
+    public void Clear() {
         this.FileList.clear();
     }
 }
