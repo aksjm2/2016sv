@@ -1,6 +1,8 @@
 package src.test;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +29,10 @@ public class MainSystem {
     JButton configureButton = new JButton("Configure");
     JButton exitButton = new JButton("Exit");
     static JList fileListVew = new JList();
-
+    static JList resultList = new JList();
+    static JPanel upPanel = new JPanel();
+    static JPanel downPanel = new JPanel();
+    static JPanel graphPanel;
     //Variable-Main
     static JFileChooser fc;
     ArrayList<String> FileList = new ArrayList<String>();
@@ -140,16 +145,12 @@ public class MainSystem {
     }
 
     public void createResultFrame() {
-        JPanel upPanel = new JPanel();
-        JPanel downPanel = new JPanel();
-
         ArrayList<HashMap<String,String>> ResultarrayList = resultManager.Scores;
         HashMap<String,String> hashMap = ResultarrayList.get(ResultarrayList.size() - 2);
         HashMap<String,String> hashMap2 = ResultarrayList.get(ResultarrayList.size() - 1);
 
-        JPanel graphPanel = viewManager.MakeGraph(hashMap, hashMap2);
+        graphPanel = viewManager.MakeGraph(hashMap, hashMap2);
 
-        JList resultList = new JList();
         resultList.setPreferredSize(new Dimension(200, 600));
         ArrayList<String> temp = new ArrayList<String>();
 
@@ -157,6 +158,20 @@ public class MainSystem {
             HashMap<String,String> hashTemp = ResultarrayList.get(i);
             temp.add(hashTemp.get("FileAname") + " - " + hashTemp.get("FileBname"));
         }
+
+        resultList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int index = resultList.getSelectedIndex();
+
+                ArrayList<HashMap<String,String>> Resultarray = resultManager.Scores;
+                HashMap<String,String> hash = Resultarray.get(Resultarray.size() - index - 2);
+                HashMap<String,String> hash2 = Resultarray.get(Resultarray.size() - 1);
+
+                viewManager.SelectResult(hash, hash2);
+                upPanel.repaint();
+            }
+        });
 
         String[] strings = temp.toArray(new String[]{""});
         resultList.setListData(strings);
