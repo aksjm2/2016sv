@@ -25,7 +25,6 @@ public class MainSystem {
     JButton deleteButton = new JButton("Delete");
     JButton clearButton = new JButton("Clear");
     JButton compareButton = new JButton("Compare");
-    JButton displayresultButton = new JButton("Display Result");
     JButton configureButton = new JButton("Configure");
     JButton exitButton = new JButton("Exit");
     static JList fileListVew = new JList();
@@ -80,12 +79,6 @@ public class MainSystem {
                 ClickClearBtn();
             }
         });
-        displayresultButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ClickDisplayResultBtn();
-            }
-        });
         compareButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -95,7 +88,7 @@ public class MainSystem {
         configureButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showConfigureDialog();
+                ClickConfigureBtn();
             }
         });
         exitButton.addActionListener(new ActionListener() {
@@ -123,7 +116,6 @@ public class MainSystem {
         sideButtonPanel.setLayout(new BoxLayout(sideButtonPanel, BoxLayout.PAGE_AXIS));
         sideButtonPanel.add(compareButton);
         sideButtonPanel.add(configureButton);
-        sideButtonPanel.add(displayresultButton);
         sideButtonPanel.add(exitButton);
 
         upPanel.setLayout(new BorderLayout());
@@ -254,7 +246,7 @@ public class MainSystem {
         configureDialog.add(spinner);
         configureDialog.add(configureApplyBtnDialog);
         configureDialog.add(configureCancelBtnDialog);
-        configureDialog.setSize(200, 200);
+        configureDialog.setSize(300, 80);
         configureDialog.setVisible(true);
         configureDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
@@ -282,7 +274,7 @@ public class MainSystem {
     }
 
     public void ClickConfigureBtn() {
-
+        showConfigureDialog();
     }
 
     public void ClickCompareBtn(){
@@ -293,10 +285,6 @@ public class MainSystem {
 
         resultManager.Compare(FileList);
         DisplayResult();
-    }
-
-    public void ClickDisplayResultBtn() {
-
     }
 
     public void ClickExitBtn(){
