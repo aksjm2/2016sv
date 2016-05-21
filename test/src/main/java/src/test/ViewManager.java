@@ -1,7 +1,5 @@
 package src.test;
 
-import com.sun.tools.javac.util.*;
-
 import javax.swing.*;
 import java.util.*;
 import java.util.List;
