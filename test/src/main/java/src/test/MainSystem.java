@@ -3,6 +3,7 @@ package src.test;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,11 +48,11 @@ public class MainSystem {
     JButton configureApplyBtnDialog = new JButton("Apply");
     JButton configureCancelBtnDialog = new JButton("Cancel");
 
-    SpinnerModel spinnerModel = new SpinnerNumberModel( 80, //initial value
-                                                        0, //min
-                                                        100, //max
-                                                        5);//step
-    JSpinner spinner = new JSpinner(spinnerModel);
+    static SpinnerModel spinnerModel = new SpinnerNumberModel(80, //initial value
+            0, //min
+            100, //max
+            5);//step
+    static JSpinner spinner = new JSpinner(spinnerModel);
 
     public void createMainFrame() {
         JPanel upPanel = new JPanel();
@@ -106,7 +107,7 @@ public class MainSystem {
         configureApplyBtnDialog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                viewManager.Configure((Integer)spinnerModel.getValue());
+                viewManager.Configure((Integer) spinnerModel.getValue());
                 configureDialog.dispose();
             }
         });
@@ -119,8 +120,8 @@ public class MainSystem {
         sideButtonPanel.add(exitButton);
 
         upPanel.setLayout(new BorderLayout());
-        upPanel.add(scrollPane,BorderLayout.CENTER);
-        upPanel.add(sideButtonPanel,BorderLayout.EAST);
+        upPanel.add(scrollPane, BorderLayout.CENTER);
+        upPanel.add(sideButtonPanel, BorderLayout.EAST);
 
         downPanel.setLayout(new BoxLayout(downPanel, BoxLayout.LINE_AXIS));
         downPanel.add(openButton);
@@ -128,14 +129,14 @@ public class MainSystem {
         downPanel.add(clearButton);
 
         mainFrame.setLayout(new BorderLayout());
-        mainFrame.add(upPanel,BorderLayout.CENTER);
-        mainFrame.add(downPanel,BorderLayout.SOUTH);
+        mainFrame.add(upPanel, BorderLayout.CENTER);
+        mainFrame.add(downPanel, BorderLayout.SOUTH);
 
         //프레임 크기 지정
         mainFrame.setSize(400, 300); // (width,height)
         //Fix mainFrame Size
-        mainFrame.setMaximumSize(new Dimension(400,300));
-        mainFrame.setMinimumSize(new Dimension(400,300));
+        mainFrame.setMaximumSize(new Dimension(400, 300));
+        mainFrame.setMinimumSize(new Dimension(400, 300));
         //프레임 보이기
         mainFrame.setVisible(true);
 
@@ -144,23 +145,23 @@ public class MainSystem {
     }
 
     public void DisplayResult() {
-        ArrayList<HashMap<String,String>> ResultarrayList = resultManager.Scores;
+        ArrayList<HashMap<String, String>> ResultarrayList = resultManager.Scores;
 
-        if(ResultarrayList.size() == 0) {
+        if (ResultarrayList.size() == 0) {
             JOptionPane.showMessageDialog(null, "복제된 것으로 의심되는 소스가 없습니다");
             return;
         }
 
-        HashMap<String,String> hashMap = ResultarrayList.get(ResultarrayList.size() - 2);
-        HashMap<String,String> hashMap2 = ResultarrayList.get(ResultarrayList.size() - 1);
+        HashMap<String, String> hashMap = ResultarrayList.get(ResultarrayList.size() - 2);
+        HashMap<String, String> hashMap2 = ResultarrayList.get(ResultarrayList.size() - 1);
 
         graphPanel = viewManager.MakeGraph(hashMap, hashMap2);
 
         resultList.setPreferredSize(new Dimension(200, 600));
         ArrayList<String> temp = new ArrayList<String>();
 
-        for(int i = ResultarrayList.size() - 2; i >= 0; i--) {
-            HashMap<String,String> hashTemp = ResultarrayList.get(i);
+        for (int i = ResultarrayList.size() - 2; i >= 0; i--) {
+            HashMap<String, String> hashTemp = ResultarrayList.get(i);
             temp.add(hashTemp.get("FileAname") + " - " + hashTemp.get("FileBname"));
         }
 
@@ -169,9 +170,9 @@ public class MainSystem {
             public void valueChanged(ListSelectionEvent e) {
                 int index = resultList.getSelectedIndex();
 
-                ArrayList<HashMap<String,String>> Resultarray = resultManager.Scores;
-                HashMap<String,String> hash = Resultarray.get(Resultarray.size() - index - 2);
-                HashMap<String,String> hash2 = Resultarray.get(Resultarray.size() - 1);
+                ArrayList<HashMap<String, String>> Resultarray = resultManager.Scores;
+                HashMap<String, String> hash = Resultarray.get(Resultarray.size() - index - 2);
+                HashMap<String, String> hash2 = Resultarray.get(Resultarray.size() - 1);
 
                 viewManager.SelectResult(hash, hash2);
                 upPanel.repaint();
@@ -201,7 +202,7 @@ public class MainSystem {
         loop.setText(hashMap.get("loop") + "%");
         total.setText(hashMap.get("total") + "%");
 
-        downPanel.setLayout(new GridLayout(0,3));
+        downPanel.setLayout(new GridLayout(0, 3));
         downPanel.add(new JLabel("Check Point"));
         downPanel.add(new JLabel(""));
         downPanel.add(new JLabel("Percentage"));
@@ -231,8 +232,8 @@ public class MainSystem {
         downPanel.add(total);
 
         resultFrame.setLayout(new BorderLayout());
-        resultFrame.add(upPanel,BorderLayout.CENTER);
-        resultFrame.add(downPanel,BorderLayout.SOUTH);
+        resultFrame.add(upPanel, BorderLayout.CENTER);
+        resultFrame.add(downPanel, BorderLayout.SOUTH);
 
         resultFrame.setSize(700, 400);
         resultFrame.setMaximumSize(new Dimension(700, 400));
@@ -242,6 +243,11 @@ public class MainSystem {
     }
 
     public void showConfigureDialog() {
+
+        JSpinner.NumberEditor jsEditor = (JSpinner.NumberEditor) spinner.getEditor();
+        jsEditor.getTextField().setEnabled(false);
+        
+
         configureDialog.setLayout(new FlowLayout());
         configureDialog.add(spinner);
         configureDialog.add(configureApplyBtnDialog);
@@ -251,8 +257,7 @@ public class MainSystem {
         configureDialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         MainSystem frameExam = new MainSystem();
         frameExam.createMainFrame();
     }
@@ -277,8 +282,8 @@ public class MainSystem {
         showConfigureDialog();
     }
 
-    public void ClickCompareBtn(){
-        if(FileList.size() < 2) {
+    public void ClickCompareBtn() {
+        if (FileList.size() < 2) {
             JOptionPane.showMessageDialog(null, "비교할 파일이 2개 이상이어야 합니다.");
             return;
         }
@@ -287,12 +292,15 @@ public class MainSystem {
         DisplayResult();
     }
 
-    public void ClickExitBtn(){
+    public void ClickExitBtn() {
         Exit();
     }
 
-    public void Exit(){
+    public void Exit() {
         System.exit(0);
     }
+
+
+
 
 }
