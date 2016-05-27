@@ -1,6 +1,7 @@
 package src.test;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,12 +16,30 @@ public class FileManager {
     public ArrayList<String> OpenFiles(ArrayList<String> FileList) {
         this.FileList = FileList;
         MainSystem.fc.setMultiSelectionEnabled(true);
+        MainSystem.fc.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String[] filename = file.getName().split("\\.");
+                String file_ext = filename[filename.length-1];
+                if(file_ext.toLowerCase().equals("c")){
+                    return true;
+                }else{
+                    return false;
+                }
 
+            }
+
+            @Override
+            public String getDescription() {
+                return null;
+            }
+        });
         int returnVal = MainSystem.fc.showOpenDialog(MainSystem.mainFrame);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File[] files = MainSystem.fc.getSelectedFiles();
             for (File file : files) {
                 this.FileList.add(file.getAbsolutePath());
+
             }
         } else {
             System.out.println("Open command cancelled by user.");
