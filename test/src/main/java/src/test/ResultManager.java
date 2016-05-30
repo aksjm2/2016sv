@@ -21,6 +21,15 @@ public class ResultManager {
         Scores = new ArrayList<HashMap<String, String>>();
 
         ArrayList<String> FileContentArray = ParseFile(FileList);
+        int sample_total = 1;
+        int sample_t = 1;
+        for (int i = 0; i < FileList.size(); i++) {
+            for (int j = i + 1; j < FileList.size(); j++) {
+                sample_total++;
+            }
+        }
+
+
 
         for (int i = 0; i < FileList.size(); i++) {
             for (int j = i + 1; j < FileList.size(); j++) {
@@ -36,13 +45,11 @@ public class ResultManager {
                     scoreName = CheckName(FileContentArray.get(i), FileContentArray.get(j));
                     scoreLoop = CheckLoop(FileContentArray.get(i), FileContentArray.get(j));
                     scoreCondition = CheckCondition(FileContentArray.get(i), FileContentArray.get(j));
-
                 } else {
                     scoreComment = scoreRawText;
                     scoreName = scoreRawText;
                     scoreLoop = scoreRawText;
                     scoreCondition = scoreRawText;
-
                 }
 
                 total = (scoreRawText + scoreComment + scoreName + scoreLoop + scoreCondition) / 5;
@@ -67,6 +74,9 @@ public class ResultManager {
 
                     Scores.add(hashMap);
                 }
+                System.out.println((sample_t/sample_total*100)+"%"+sample_t+"/"+sample_total);
+                sample_t++;
+
             }
         }
 
@@ -74,61 +84,51 @@ public class ResultManager {
     }
 
 
-    public int CheckRawText(String a, String b) {
-
-        String s0 = a;
-        String s1 = b;
-
-        int percentage = 0;
-        // Trim and remove duplicate spaces
-        s0 = s0.trim().replaceAll("\\s+", " ");
-        s1 = s1.trim().replaceAll("\\s+", " ");
-
-        int len0 = s0.length() + 1;
-        int len1 = s1.length() + 1;
-
-        // the array of distances
-        int[] cost = new int[len0];
-        int[] newcost = new int[len0];
-
-        // initial cost of skipping prefix in String s0
-        for (int i = 0; i < len0; i++)
-            cost[i] = i;
-
-        // dynamicaly computing the array of distances
-
-        // transformation cost for each letter in s1
-        for (int j = 1; j < len1; j++) {
-
-            // initial cost of skipping prefix in String s1
-            newcost[0] = j - 1;
-
-            // transformation cost for each letter in s0
-            for (int i = 1; i < len0; i++) {
-
-                // matching current letters in both strings
-                int match = (s0.charAt(i - 1) == s1.charAt(j - 1)) ? 0 : 1;
-
-                // computing cost for each transformation
-                int cost_replace = cost[i - 1] + match;
-                int cost_insert = cost[i] + 1;
-                int cost_delete = newcost[i - 1] + 1;
-
-                // keep minimum cost
-                newcost[i] = Math.min(Math.min(cost_insert, cost_delete),
-                        cost_replace);
-            }
-
-            // swap cost/newcost arrays
-            int[] swap = cost;
-            cost = newcost;
-            newcost = swap;
+    public int CheckRawText(String s1, String s2) {
+        String longer = s1, shorter = s2;
+        if (s1.length() < s2.length()) { // longer should always have greater length
+            longer = s2;
+            shorter = s1;
         }
+        int longerLength = longer.length();
+        if (longerLength == 0) {
+            return 100; /* both strings are zero length */
+        }
+    /* // If you have StringUtils, you can use it to calculate the edit distance:
+    return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter)) /
+                               (double) longerLength; */
 
 
-        percentage = (int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
+        s1 = longer;
+        s2 = shorter;
 
-        return percentage;
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+
+        int[] costs = new int[s2.length() + 1];
+        for (int i = 0; i <= s1.length(); i++) {
+            int lastValue = i;
+            for (int j = 0; j <= s2.length(); j++) {
+                if (i == 0)
+                    costs[j] = j;
+                else {
+                    if (j > 0) {
+                        int newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                            newValue = Math.min(Math.min(newValue, lastValue),
+                                    costs[j]) + 1;
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    }
+                }
+            }
+            if (i > 0)
+                costs[s2.length()] = lastValue;
+        }
+        int editdistance = costs[s2.length()];
+
+
+        return (int) (100.0 * (longerLength - editdistance) / (double) longerLength);
     }
 
 
@@ -157,8 +157,8 @@ public class ResultManager {
 
         String tmp_a = a;
         String tmp_b = b;
-        String s0 = "";
         String s1 = "";
+        String s2 = "";
 
 
         Matcher matcher = pattern.matcher(tmp_a);
@@ -166,7 +166,7 @@ public class ResultManager {
 
         while (matcher.find()) {
             String str = matcher.group();
-            s0 += str + "\n";
+            s1 += str + "\n";
         }
 
         matcher = pattern.matcher(tmp_b);
@@ -174,58 +174,55 @@ public class ResultManager {
 
         while (matcher.find()) {
             String str = matcher.group();
-            s1 += str + "\n";
+            s2 += str + "\n";
         }
 
         int percentage = 0;
-        // Trim and remove duplicate spaces
-        s0 = s0.trim().replaceAll("\\s+", " ");
-        s1 = s1.trim().replaceAll("\\s+", " ");
 
-        int len0 = s0.length() + 1;
-        int len1 = s1.length() + 1;
-
-        // the array of distances
-        int[] cost = new int[len0];
-        int[] newcost = new int[len0];
-
-        // initial cost of skipping prefix in String s0
-        for (int i = 0; i < len0; i++)
-            cost[i] = i;
-
-        // dynamicaly computing the array of distances
-
-        // transformation cost for each letter in s1
-        for (int j = 1; j < len1; j++) {
-
-            // initial cost of skipping prefix in String s1
-            newcost[0] = j - 1;
-
-            // transformation cost for each letter in s0
-            for (int i = 1; i < len0; i++) {
-
-                // matching current letters in both strings
-                int match = (s0.charAt(i - 1) == s1.charAt(j - 1)) ? 0 : 1;
-
-                // computing cost for each transformation
-                int cost_replace = cost[i - 1] + match;
-                int cost_insert = cost[i] + 1;
-                int cost_delete = newcost[i - 1] + 1;
-
-                // keep minimum cost
-                newcost[i] = Math.min(Math.min(cost_insert, cost_delete),
-                        cost_replace);
-            }
-
-            // swap cost/newcost arrays
-            int[] swap = cost;
-            cost = newcost;
-            newcost = swap;
+        String longer = s1, shorter = s2;
+        if (s1.length() < s2.length()) { // longer should always have greater length
+            longer = s2;
+            shorter = s1;
         }
+        int longerLength = longer.length();
+        if (longerLength == 0) {
+            return 0; /* both strings are zero length */
+        }
+    /* // If you have StringUtils, you can use it to calculate the edit distance:
+    return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter)) /
+                               (double) longerLength; */
 
-        percentage = (int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
 
-        return percentage;
+        s1 = longer;
+        s2 = shorter;
+
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+
+        int[] costs = new int[s2.length() + 1];
+        for (int i = 0; i <= s1.length(); i++) {
+            int lastValue = i;
+            for (int j = 0; j <= s2.length(); j++) {
+                if (i == 0)
+                    costs[j] = j;
+                else {
+                    if (j > 0) {
+                        int newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                            newValue = Math.min(Math.min(newValue, lastValue),
+                                    costs[j]) + 1;
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    }
+                }
+            }
+            if (i > 0)
+                costs[s2.length()] = lastValue;
+        }
+        int editdistance = costs[s2.length()];
+
+
+        return (int) (100.0 * (longerLength - editdistance) / (double) longerLength);
     }
 
     public int CheckName(String a, String b) {
@@ -314,60 +311,53 @@ public class ResultManager {
             b = b.replaceAll("\\b" + key + "\\b", "tmp");
         }
 
-        String s0 = a;
-        String s1 = b;
+        String s1 = a;
+        String s2 = b;
 
-        int percentage = 0;
-
-        // Trim and remove duplicate spaces
-        s0 = s0.trim().replaceAll("\\s+", " ");
-        s1 = s1.trim().replaceAll("\\s+", " ");
-
-        int len0 = s0.length() + 1;
-        int len1 = s1.length() + 1;
-
-        // the array of distances
-        int[] cost = new int[len0];
-        int[] newcost = new int[len0];
-
-        // initial cost of skipping prefix in String s0
-        for (int i = 0; i < len0; i++)
-            cost[i] = i;
-
-        // dynamicaly computing the array of distances
-
-        // transformation cost for each letter in s1
-        for (int j = 1; j < len1; j++) {
-
-            // initial cost of skipping prefix in String s1
-            newcost[0] = j - 1;
-
-            // transformation cost for each letter in s0
-            for (int i = 1; i < len0; i++) {
-
-                // matching current letters in both strings
-                int match = (s0.charAt(i - 1) == s1.charAt(j - 1)) ? 0 : 1;
-
-                // computing cost for each transformation
-                int cost_replace = cost[i - 1] + match;
-                int cost_insert = cost[i] + 1;
-                int cost_delete = newcost[i - 1] + 1;
-
-                // keep minimum cost
-                newcost[i] = Math.min(Math.min(cost_insert, cost_delete),
-                        cost_replace);
-            }
-
-            // swap cost/newcost arrays
-            int[] swap = cost;
-            cost = newcost;
-            newcost = swap;
+        String longer = s1, shorter = s2;
+        if (s1.length() < s2.length()) { // longer should always have greater length
+            longer = s2;
+            shorter = s1;
         }
+        int longerLength = longer.length();
+        if (longerLength == 0) {
+            return 0; /* both strings are zero length */
+        }
+    /* // If you have StringUtils, you can use it to calculate the edit distance:
+    return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter)) /
+                               (double) longerLength; */
 
 
-        percentage = (int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
+        s1 = longer;
+        s2 = shorter;
 
-        return percentage;
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+
+        int[] costs = new int[s2.length() + 1];
+        for (int i = 0; i <= s1.length(); i++) {
+            int lastValue = i;
+            for (int j = 0; j <= s2.length(); j++) {
+                if (i == 0)
+                    costs[j] = j;
+                else {
+                    if (j > 0) {
+                        int newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                            newValue = Math.min(Math.min(newValue, lastValue),
+                                    costs[j]) + 1;
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    }
+                }
+            }
+            if (i > 0)
+                costs[s2.length()] = lastValue;
+        }
+        int editdistance = costs[s2.length()];
+
+
+        return (int) (100.0 * (longerLength - editdistance) / (double) longerLength);
     }
 
     public int CheckLoop(String a, String b) {
@@ -391,59 +381,53 @@ public class ResultManager {
         b = b.replaceAll("while", "for");
 
 
+        String s1 = a;
+        String s2 = b;
 
-        String s0 = a;
-        String s1 = b;
-
-        int percentage = 0;
-        // Trim and remove duplicate spaces
-        s0 = s0.trim().replaceAll("\\s+", " ");
-        s1 = s1.trim().replaceAll("\\s+", " ");
-
-        int len0 = s0.length() + 1;
-        int len1 = s1.length() + 1;
-
-        // the array of distances
-        int[] cost = new int[len0];
-        int[] newcost = new int[len0];
-
-        // initial cost of skipping prefix in String s0
-        for (int i = 0; i < len0; i++)
-            cost[i] = i;
-
-        // dynamicaly computing the array of distances
-
-        // transformation cost for each letter in s1
-        for (int j = 1; j < len1; j++) {
-
-            // initial cost of skipping prefix in String s1
-            newcost[0] = j - 1;
-
-            // transformation cost for each letter in s0
-            for (int i = 1; i < len0; i++) {
-
-                // matching current letters in both strings
-                int match = (s0.charAt(i - 1) == s1.charAt(j - 1)) ? 0 : 1;
-
-                // computing cost for each transformation
-                int cost_replace = cost[i - 1] + match;
-                int cost_insert = cost[i] + 1;
-                int cost_delete = newcost[i - 1] + 1;
-
-                // keep minimum cost
-                newcost[i] = Math.min(Math.min(cost_insert, cost_delete),
-                        cost_replace);
-            }
-
-            // swap cost/newcost arrays
-            int[] swap = cost;
-            cost = newcost;
-            newcost = swap;
+        String longer = s1, shorter = s2;
+        if (s1.length() < s2.length()) { // longer should always have greater length
+            longer = s2;
+            shorter = s1;
         }
+        int longerLength = longer.length();
+        if (longerLength == 0) {
+            return 0; /* both strings are zero length */
+        }
+    /* // If you have StringUtils, you can use it to calculate the edit distance:
+    return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter)) /
+                               (double) longerLength; */
 
-        percentage = (int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
 
-        return percentage;
+        s1 = longer;
+        s2 = shorter;
+
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+
+        int[] costs = new int[s2.length() + 1];
+        for (int i = 0; i <= s1.length(); i++) {
+            int lastValue = i;
+            for (int j = 0; j <= s2.length(); j++) {
+                if (i == 0)
+                    costs[j] = j;
+                else {
+                    if (j > 0) {
+                        int newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                            newValue = Math.min(Math.min(newValue, lastValue),
+                                    costs[j]) + 1;
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    }
+                }
+            }
+            if (i > 0)
+                costs[s2.length()] = lastValue;
+        }
+        int editdistance = costs[s2.length()];
+
+
+        return (int) (100.0 * (longerLength - editdistance) / (double) longerLength);
     }
 
     public int CheckCondition(String a, String b) {
@@ -464,58 +448,53 @@ public class ResultManager {
         a = a.replaceAll("switch", "if");
         b = b.replaceAll("switch", "if");
 
-        String s0 = a;
-        String s1 = b;
+        String s1 = a;
+        String s2 = b;
 
-        int percentage = 0;
-        // Trim and remove duplicate spaces
-        s0 = s0.trim().replaceAll("\\s+", " ");
-        s1 = s1.trim().replaceAll("\\s+", " ");
-
-        int len0 = s0.length() + 1;
-        int len1 = s1.length() + 1;
-
-        // the array of distances
-        int[] cost = new int[len0];
-        int[] newcost = new int[len0];
-
-        // initial cost of skipping prefix in String s0
-        for (int i = 0; i < len0; i++)
-            cost[i] = i;
-
-        // dynamicaly computing the array of distances
-
-        // transformation cost for each letter in s1
-        for (int j = 1; j < len1; j++) {
-
-            // initial cost of skipping prefix in String s1
-            newcost[0] = j - 1;
-
-            // transformation cost for each letter in s0
-            for (int i = 1; i < len0; i++) {
-
-                // matching current letters in both strings
-                int match = (s0.charAt(i - 1) == s1.charAt(j - 1)) ? 0 : 1;
-
-                // computing cost for each transformation
-                int cost_replace = cost[i - 1] + match;
-                int cost_insert = cost[i] + 1;
-                int cost_delete = newcost[i - 1] + 1;
-
-                // keep minimum cost
-                newcost[i] = Math.min(Math.min(cost_insert, cost_delete),
-                        cost_replace);
-            }
-
-            // swap cost/newcost arrays
-            int[] swap = cost;
-            cost = newcost;
-            newcost = swap;
+        String longer = s1, shorter = s2;
+        if (s1.length() < s2.length()) { // longer should always have greater length
+            longer = s2;
+            shorter = s1;
         }
+        int longerLength = longer.length();
+        if (longerLength == 0) {
+            return 0; /* both strings are zero length */
+        }
+    /* // If you have StringUtils, you can use it to calculate the edit distance:
+    return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter)) /
+                               (double) longerLength; */
 
-        percentage = (int) (100 - (float) cost[len0 - 1] * 100 / (float) (s0.length() + s1.length()));
 
-        return percentage;
+        s1 = longer;
+        s2 = shorter;
+
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+
+        int[] costs = new int[s2.length() + 1];
+        for (int i = 0; i <= s1.length(); i++) {
+            int lastValue = i;
+            for (int j = 0; j <= s2.length(); j++) {
+                if (i == 0)
+                    costs[j] = j;
+                else {
+                    if (j > 0) {
+                        int newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                            newValue = Math.min(Math.min(newValue, lastValue),
+                                    costs[j]) + 1;
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    }
+                }
+            }
+            if (i > 0)
+                costs[s2.length()] = lastValue;
+        }
+        int editdistance = costs[s2.length()];
+
+
+        return (int) (100.0 * (longerLength - editdistance) / (double) longerLength);
     }
 
     public void CalculateScores() {
@@ -600,4 +579,6 @@ public class ResultManager {
         Scores.add(hashMap);
 
     }
+
+
 }

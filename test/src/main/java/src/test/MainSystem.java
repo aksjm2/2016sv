@@ -48,7 +48,7 @@ public class MainSystem {
     JButton configureApplyBtnDialog = new JButton("Apply");
     JButton configureCancelBtnDialog = new JButton("Cancel");
 
-    static SpinnerModel spinnerModel = new SpinnerNumberModel(80, //initial value
+    static SpinnerModel spinnerModel = new SpinnerNumberModel(ViewManager.Percentage, //initial value
             0, //min
             100, //max
             5);//step

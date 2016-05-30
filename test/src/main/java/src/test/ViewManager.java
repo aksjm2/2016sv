@@ -8,7 +8,7 @@ import java.util.List;
  * Created by SuchangKo on 16. 5. 12..
  */
 public class ViewManager {
-    static int Percentage = 50;
+    static int Percentage = 40;
     static DrawGraph mainPanel;
 
     public JPanel MakeGraph(HashMap<String, String> hashMap, HashMap<String, String> hashMap2) {
