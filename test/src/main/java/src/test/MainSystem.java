@@ -47,11 +47,11 @@ public class MainSystem {
     //Component-Configure
     JButton configureApplyBtnDialog = new JButton("Apply");
     JButton configureCancelBtnDialog = new JButton("Cancel");
-
-    static SpinnerModel spinnerModel = new SpinnerNumberModel(ViewManager.Percentage, //initial value
-            0, //min
-            100, //max
-            5);//step
+    static SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(ViewManager.Percentage, //initial value
+                                                                            0, //min
+                                                                                    100, //max
+                                                                                    5);//step
+    static SpinnerModel spinnerModel = spinnerNumberModel;
     static JSpinner spinner = new JSpinner(spinnerModel);
 
     public void createMainFrame() {
@@ -102,13 +102,16 @@ public class MainSystem {
             @Override
             public void actionPerformed(ActionEvent e) {
                 configureDialog.dispose();
+                System.out.println("Percentage1 : "+ViewManager.Percentage);
             }
         });
         configureApplyBtnDialog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Percentage2 : "+ViewManager.Percentage);
                 viewManager.Configure((Integer) spinnerModel.getValue());
                 configureDialog.dispose();
+                System.out.println("Percentage3 : "+ViewManager.Percentage);
             }
         });
 
@@ -246,8 +249,10 @@ public class MainSystem {
 
         JSpinner.NumberEditor jsEditor = (JSpinner.NumberEditor) spinner.getEditor();
         jsEditor.getTextField().setEnabled(false);
+        System.out.println("Percentage4 : "+ViewManager.Percentage);
+        spinnerModel.setValue(ViewManager.Percentage);
 
-
+        spinnerNumberModel.setValue(ViewManager.Percentage);
         configureDialog.setLayout(new FlowLayout());
         configureDialog.add(spinner);
         configureDialog.add(configureApplyBtnDialog);
