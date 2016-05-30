@@ -42,7 +42,26 @@ public class FileManager {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File[] files = MainSystem.fc.getSelectedFiles();
             for (File file : files) {
-                this.FileList.add(file.getAbsolutePath());
+                if(FileList.size() > 0) {
+                    boolean isExist = false;
+                    for (int index = 0; index < FileList.size(); index++) {
+                        String tmp_file = FileList.get(index);
+                        System.out.println(tmp_file.equals(file.getAbsolutePath())+"|| A:"+tmp_file+" B:"+file.getAbsolutePath() );
+
+                        if (tmp_file.equals(file.getAbsolutePath())) {
+                            isExist = true;
+                            break;
+                        }else{
+                            isExist = false;
+                        }
+                    }
+                    if(!isExist){
+                        this.FileList.add(file.getAbsolutePath());
+                    }
+                }else{
+                    this.FileList.add(file.getAbsolutePath());
+                }
+
 
             }
         } else {
