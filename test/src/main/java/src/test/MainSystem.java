@@ -246,7 +246,7 @@ public class MainSystem {
 
         JSpinner.NumberEditor jsEditor = (JSpinner.NumberEditor) spinner.getEditor();
         jsEditor.getTextField().setEnabled(false);
-        
+
 
         configureDialog.setLayout(new FlowLayout());
         configureDialog.add(spinner);

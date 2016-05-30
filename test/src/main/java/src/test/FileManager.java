@@ -21,8 +21,12 @@ public class FileManager {
             public boolean accept(File file) {
                 String[] filename = file.getName().split("\\.");
                 String file_ext = filename[filename.length-1];
-                if(file_ext.toLowerCase().equals("c")){
-                    return true;
+                if(file_ext.toLowerCase().equals("c") || file.isDirectory()){
+                    if(file.exists()){
+                        return true;
+                    }else{
+                        return false;
+                    }
                 }else{
                     return false;
                 }
