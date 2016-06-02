@@ -12,15 +12,13 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
   </properties>
   
   <scm>
   <connection>scm:git:https://github.com/aksjm2/2016sv.git</connection>
   </scm>
-  <properties>
-    <checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
-  </properties>
-
+  
   <build>
   <plugins>
   <plugin>
