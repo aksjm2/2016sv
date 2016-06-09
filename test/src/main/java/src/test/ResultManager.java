@@ -36,7 +36,7 @@ public class ResultManager {
             for (int j = i + 1; j < FileList.size(); j++) {
                 // TODO: 여기 있는 score 정보들을 Scores에 넣어야 됨
 
-                int scoreComment, scoreName, scoreLoop, scoreCondition, scoreFunctionMerge, total;
+                int scoreComment, scoreName, scoreLoop, scoreCondition, total;
                 int scoreRawText = CheckRawText(FileContentArray.get(i), FileContentArray.get(j));
 
                 // TODO: ParseFile 추가해야 됨.
