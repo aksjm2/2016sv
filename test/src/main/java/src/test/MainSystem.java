@@ -83,7 +83,9 @@ public class MainSystem {
         compareButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                compareButton.setEnabled(false);
                 ClickCompareBtn();
+
             }
         });
         configureButton.addActionListener(new ActionListener() {
@@ -160,14 +162,14 @@ public class MainSystem {
 
         graphPanel = viewManager.MakeGraph(hashMap, hashMap2);
 
-        resultList.setPreferredSize(new Dimension(200, 600));
+        resultList.setPreferredSize(new Dimension(280, 600));
         ArrayList<String> temp = new ArrayList<String>();
 
         for (int i = ResultarrayList.size() - 2; i >= 0; i--) {
             HashMap<String, String> hashTemp = ResultarrayList.get(i);
             temp.add(hashTemp.get("FileAname") + " - " + hashTemp.get("FileBname"));
         }
-
+        //resultList
         resultList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -192,10 +194,18 @@ public class MainSystem {
         });
 
         String[] strings = temp.toArray(new String[]{""});
+
         resultList.setListData(strings);
+        resultList.setAutoscrolls(true);
+
 
         upPanel.setLayout(new FlowLayout());
-        upPanel.add(new JScrollPane(resultList));
+
+        JScrollPane scrollPane = new JScrollPane(resultList);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+        upPanel.add(scrollPane);
         upPanel.add(graphPanel);
 
         rawtext.setText(hashMap.get("rawtext") + "%");

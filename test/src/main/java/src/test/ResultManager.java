@@ -18,6 +18,9 @@ public class ResultManager {
     ArrayList<HashMap<String, String>> Scores;
 
     public void Compare(ArrayList<String> FileList) {
+
+        //Added
+        long startTime = System.currentTimeMillis();
         Scores = new ArrayList<HashMap<String, String>>();
 
         ArrayList<String> FileContentArray = ParseFile(FileList);
@@ -81,6 +84,12 @@ public class ResultManager {
         }
 
         CalculateScores();
+        // End time
+        long endTime = System.currentTimeMillis();
+
+// Total time
+        long lTime = endTime - startTime;
+        System.out.println("TIME : " + lTime + "(ms)");
     }
 
 
