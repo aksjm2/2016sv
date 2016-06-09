@@ -34,7 +34,6 @@
         </archive>
       </configuration>
     </plugin>
-    
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-release-plugin</artifactId>
@@ -44,7 +43,7 @@
         <pushChanges>false</pushChanges>
     </configuration>
 </plugin>	
-<plugin>
+	<plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.0</version>
@@ -52,12 +51,12 @@
           <source>1.5</source>
           <target>1.5</target>
         </configuration>
-</plugin>
+      </plugin>
 
-</plugins>
+	</plugins>
 
   </build>
-<!-- <reporting>
+<reporting>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -69,7 +68,7 @@
       </plugin>
     </plugins>
   </reporting>
--->
+
 <!-- 
 <distributionManagement>
     <repository>
