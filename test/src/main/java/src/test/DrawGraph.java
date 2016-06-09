@@ -4,18 +4,10 @@ package src.test;
  * Created by Sangyu on 2016. 5. 18..
  */
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.Stroke;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import javax.swing.*;
 
 public class DrawGraph extends JPanel {
     private static final int MAX_SCORE = 110;
